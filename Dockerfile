@@ -110,8 +110,10 @@ COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/static ./apps/${S
 COPY --from=builder --chown=nextjs:nodejs /app/apps/${SCOPE}/public ./apps/${SCOPE}/public
 
 
+RUN apt-get update && apt-get install -y --no-install-recommends postgresql-client && rm -rf /var/lib/apt/lists/*
+COPY scripts/seed-auto-user.sh ./scripts/
 COPY scripts/${SCOPE}-entrypoint.sh ./
-RUN chmod +x ./${SCOPE}-entrypoint.sh
+RUN chmod +x ./${SCOPE}-entrypoint.sh ./scripts/seed-auto-user.sh
 ENTRYPOINT ./${SCOPE}-entrypoint.sh
 
 EXPOSE 3000
