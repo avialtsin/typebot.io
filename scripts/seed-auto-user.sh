@@ -27,11 +27,13 @@ echo "[seed-auto-user] Seeding auto-login user..."
 
 psql "${DB_URL}" <<SQL
 -- Create auto-login user
-INSERT INTO "User" (id, email, name, "createdAt", "updatedAt")
+INSERT INTO "User" (id, email, name, "onboardingCategories", "createdAt", "updatedAt", "lastActivityAt")
 VALUES (
   'auto-admin-user-001',
   'admin@voicescreen.local',
   'VoiceScreen Admin',
+  '[]'::jsonb,
+  NOW(),
   NOW(),
   NOW()
 )
